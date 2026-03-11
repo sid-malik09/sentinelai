@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { formatRelativeTime, sentimentBgColor } from "@/lib/utils";
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 const SOURCES = [
   { value: "all", label: "All Sources" },
@@ -91,7 +91,7 @@ export default function MentionsPage() {
   const params = new URLSearchParams({ page: String(page), limit: "20" });
   if (source !== "all") params.set("source", source);
 
-  const { data, isLoading } = useSWR<MentionsResponse>(
+  const { data, error, isLoading } = useSWR<MentionsResponse>(
     `/api/mentions?${params}`,
     fetcher,
     { refreshInterval: 30000 }
@@ -103,9 +103,11 @@ export default function MentionsPage() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Mentions</h2>
           <p className="text-muted-foreground">
-            {data
-              ? `${data.pagination.total} mentions collected`
-              : "Loading..."}
+            {isLoading
+              ? "Loading..."
+              : error
+                ? "Error loading mentions"
+                : `${data?.pagination.total ?? 0} mentions collected`}
           </p>
         </div>
         <div className="flex gap-2">
@@ -134,6 +136,25 @@ export default function MentionsPage() {
         <Card>
           <CardContent className="flex h-64 items-center justify-center">
             <p className="text-muted-foreground">Loading mentions...</p>
+          </CardContent>
+        </Card>
+      ) : error ? (
+        <Card>
+          <CardContent className="flex h-64 flex-col items-center justify-center gap-2">
+            <p className="text-sm font-medium text-destructive">
+              Failed to load mentions
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {error.message ?? "Unknown error"}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </Button>
           </CardContent>
         </Card>
       ) : !data || data.mentions.length === 0 ? (

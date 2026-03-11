@@ -35,7 +35,7 @@ type Category = "brand" | "competitor" | "product" | "industry";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 interface Topic {
   id: string;

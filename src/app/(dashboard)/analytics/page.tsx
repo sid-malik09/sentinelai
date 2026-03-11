@@ -23,7 +23,7 @@ import {
 } from "recharts";
 import { formatDate } from "@/lib/utils";
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 const DAY_OPTIONS = [
   { label: "7 days", value: 7 },

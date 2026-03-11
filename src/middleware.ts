@@ -1,8 +1,9 @@
 export { auth as middleware } from "@/lib/auth";
 
 export const config = {
-  // Protect all routes except login, api/auth, static files, and api/cron
+  // Protect page routes only — exclude ALL API routes, login, and static assets.
+  // API routes are either public or use their own auth (cron uses CRON_SECRET).
   matcher: [
-    "/((?!login|api/auth|api/cron|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|login|_next/static|_next/image|favicon.ico).*)",
   ],
 };

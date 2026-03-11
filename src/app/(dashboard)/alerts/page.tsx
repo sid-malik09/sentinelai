@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import { formatRelativeTime } from "@/lib/utils";
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 interface AlertRule {
   id: string;

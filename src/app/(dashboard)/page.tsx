@@ -24,7 +24,7 @@ import {
 } from "recharts";
 import { formatRelativeTime, sentimentBgColor } from "@/lib/utils";
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from "@/lib/fetcher";
 
 const SOURCE_COLORS: Record<string, string> = {
   hackernews: "#ff6600",
