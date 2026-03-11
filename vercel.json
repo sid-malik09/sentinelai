@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/collect-news",
       "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/analyze-mentions",
+      "schedule": "*/10 * * * *"
     }
   ]
 }
