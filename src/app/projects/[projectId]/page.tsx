@@ -182,7 +182,7 @@ export default function ProjectDetailPage({
 
               <div className="space-y-2">
                 <Label>Category</Label>
-                <Select value={category} onValueChange={(val) => setCategory(val as Category)}>
+                <Select value={category} onValueChange={(val) => { if (val) setCategory(val as Category); }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
