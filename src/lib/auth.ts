@@ -21,10 +21,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: "Email", type: "email", placeholder: "demo@sentinelai.app" },
       },
       async authorize(credentials) {
-        if (process.env.NODE_ENV === "production") {
-          return null; // Disabled in production
-        }
-
         const email = credentials?.email as string;
         if (!email) return null;
 
