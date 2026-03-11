@@ -5,12 +5,13 @@ import { sql, eq, gte, and } from "drizzle-orm";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
-  const rateLimited = await checkRateLimit(
-    request.headers.get("x-forwarded-for") ?? "anonymous"
-  );
-  if (rateLimited) return rateLimited;
+  try {
+    const rateLimited = await checkRateLimit(
+      request.headers.get("x-forwarded-for") ?? "anonymous"
+    );
+    if (rateLimited) return rateLimited;
 
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000);
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000);
 
   const [
     totalMentionsResult,
@@ -96,4 +97,11 @@ export async function GET(request: NextRequest) {
     })),
     recentMentions,
   });
+  } catch (error) {
+    console.error("Overview API error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch overview", details: String(error) },
+      { status: 500 }
+    );
+  }
 }
