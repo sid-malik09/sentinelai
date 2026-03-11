@@ -2,19 +2,19 @@
   "crons": [
     {
       "path": "/api/cron/collect-hackernews",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/collect-reddit",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 7 * * *"
     },
     {
       "path": "/api/cron/collect-news",
-      "schedule": "0 */8 * * *"
+      "schedule": "0 8 * * *"
     },
     {
       "path": "/api/cron/analyze-mentions",
-      "schedule": "0 */4 * * *"
+      "schedule": "0 9 * * *"
     },
     {
       "path": "/api/cron/aggregate-daily",
@@ -22,7 +22,7 @@
     },
     {
       "path": "/api/cron/check-alerts",
-      "schedule": "0 */12 * * *"
+      "schedule": "0 12 * * *"
     }
   ]
 }
