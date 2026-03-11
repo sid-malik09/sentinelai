@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/analyze-mentions",
       "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/cron/aggregate-daily",
+      "schedule": "5 0 * * *"
     }
   ]
 }
