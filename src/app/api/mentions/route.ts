@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { mentions, analyses, topics } from "@/lib/db/schema";
 import { eq, desc, and, gte, lte, sql } from "drizzle-orm";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rateLimited = await checkRateLimit(
+    request.headers.get("x-forwarded-for") ?? "anonymous"
+  );
+  if (rateLimited) return rateLimited;
+
   const searchParams = request.nextUrl.searchParams;
   const source = searchParams.get("source");
   const topicId = searchParams.get("topicId");

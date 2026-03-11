@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { mentions } from "@/lib/db/schema";
 import { eq, gte, and, sql } from "drizzle-orm";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rateLimited = await checkRateLimit(
+    request.headers.get("x-forwarded-for") ?? "anonymous"
+  );
+  if (rateLimited) return rateLimited;
+
   const searchParams = request.nextUrl.searchParams;
   const days = parseInt(searchParams.get("days") ?? "14");
   const source = searchParams.get("source");

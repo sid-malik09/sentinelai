@@ -1,9 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { mentions, analyses, alertRules, topics } from "@/lib/db/schema";
 import { sql, eq, gte, and } from "drizzle-orm";
+import { checkRateLimit } from "@/lib/rate-limit";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const rateLimited = await checkRateLimit(
+    request.headers.get("x-forwarded-for") ?? "anonymous"
+  );
+  if (rateLimited) return rateLimited;
+
   const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000);
 
   const [
